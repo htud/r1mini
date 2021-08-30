@@ -77,6 +77,8 @@ class OMOR1miniNode:
     def __init__(self):
         self.modelName = rospy.get_param('~modelName')
         print "Model Name:"+ self.modelName
+        self.tf_prefix = rospy.get_param('~tf_prefix', "")
+        print "tf_prefix:"+self.tf_prefix
         self.ph = PacketHandler()
         self.ph.ser.reset_input_buffer() 
         self.ph.ser.reset_output_buffer() 
@@ -123,12 +125,12 @@ class OMOR1miniNode:
         rospy.Service('set_headlight', Onoff, self.set_headlight_handle)
         rospy.Service('calibrate_gyro', Calg, self.calibrate_gyro)
 
-        rospy.Subscriber("cmd_vel", Twist, self.sub_cmd_vel, queue_size=1)
+        rospy.Subscriber(self.tf_prefix+"/cmd_vel", Twist, self.sub_cmd_vel, queue_size=1)
         
-        self.pub_joint_states = rospy.Publisher('joint_states', JointState, queue_size=10)
-        self.odom_pub = rospy.Publisher("odom", Odometry, queue_size=10)
+        self.pub_joint_states = rospy.Publisher(self.tf_prefix+'/joint_states', JointState, queue_size=10)
+        self.odom_pub = rospy.Publisher(self.tf_prefix+"/odom", Odometry, queue_size=10)
         self.odom_broadcaster = TransformBroadcaster()
-        self.pub_pose = rospy.Publisher("pose", Pose, queue_size=1000)
+        self.pub_pose = rospy.Publisher(self.tf_prefix+"/pose", Pose, queue_size=1000)
 
         if self.modelName == 'r1mini':
             self.ph.incomming_info = ['ODO', 'VW', "POSE", "GYRO"]
@@ -188,12 +190,14 @@ class OMOR1miniNode:
         self.odom_vel.w = orient_vel
 
         odom = Odometry()
-        odom.header.frame_id = "odom"
-        odom.child_frame_id = "base_footprint"
+        odom.header.frame_id = self.tf_prefix+"/odom"
+        odom.child_frame_id = self.tf_prefix+"/base_footprint"
 
         self.odom_broadcaster.sendTransform((self.odom_pose.x, self.odom_pose.y, 0.), 
-                                                odom_orientation_quat, self.odom_pose.timestamp, 
-                                                odom.child_frame_id, odom.header.frame_id)
+                                                odom_orientation_quat, 
+                                                self.odom_pose.timestamp, 
+                                                odom.child_frame_id, 
+                                                odom.header.frame_id)
       
         odom.header.stamp = rospy.Time.now()
         odom.pose.pose = Pose(Point(self.odom_pose.x, self.odom_pose.y, 0.), Quaternion(*odom_orientation_quat))
@@ -223,7 +227,7 @@ class OMOR1miniNode:
         self.joint.joint_vel = [wheel_ang_vel_left, wheel_ang_vel_right]
 
         joint_states = JointState()
-        joint_states.header.frame_id = "base_link"
+        joint_states.header.frame_id = self.tf_prefix+"/base_link"
         joint_states.header.stamp = rospy.Time.now()
         joint_states.name = self.joint.joint_name
         joint_states.position = self.joint.joint_pos

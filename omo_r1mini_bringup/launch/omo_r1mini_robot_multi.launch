@@ -1,13 +1,13 @@
 <launch>
   <arg name="set_lidar_frame_id" default="base_scan"/>
   <arg name="set_port_lidar" default="/dev/ttyLiDAR"/>
-  <arg name="set_multi_robot_name" default=""/>
+  <arg name="set_multi_robot_name" default="robot_1"/>
   <include file="$(find omo_r1mini_bringup)/launch/omo_r1mini_bringup.launch">
-    <arg name="set_multi_robot_name" value="$(arg set_multi_robot_name)"/>
+    <arg name="set_multi_robot_name" type="string" value="$(arg set_multi_robot_name)"/>
   </include>
 
   <include file="$(find omo_r1mini_bringup)/launch/omo_r1mini_lidar.launch">
-    <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
+    <arg name="set_frame_id" value="$(arg set_multi_robot_name)/$(arg set_lidar_frame_id)"/>
     <arg name="set_port" value="$(arg set_port_lidar)"/>
   </include>
 
