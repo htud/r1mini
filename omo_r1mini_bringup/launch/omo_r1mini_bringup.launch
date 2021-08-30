@@ -1,7 +1,7 @@
 <launch>
   <arg name="set_port" default="/dev/ttyTHS1"/>
   <arg name="set_multi_robot_name" default=""/>
-  <node pkg="omo_r1mini_bringup" type="omo_r1mini_node.py" name="omo_r1mini_node" output="screen">
+  <node pkg="omo_r1mini_bringup" type="omo_r1mini_node.py" name="$(arg set_multi_robot_name)_omo_r1mini_node" output="screen">
       <param name="port" value="$(arg set_port)"/>
       <param name="baud" value="115200"/>
       <param name="modelName" value="r1mini"/>
