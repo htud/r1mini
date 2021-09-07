@@ -3,7 +3,7 @@
   <arg name="set_frame_id" default="base_scan"/>
   <arg name="set_multi_robot_name" default=""/>
 
-  <node pkg="ydlidar" type="ydlidar_node" name="$(arg set_multi_robot_name)_omo_r1_ydlidar" output="screen" respawn="false" >
+  <node pkg="ydlidar" type="ydlidar_node" name="$(arg set_multi_robot_name)omo_r1_ydlidar" output="screen" respawn="false" >
     <param name="port"         type="string" value="$(arg set_port)"/>  
     <param name="baudrate"     type="int"    value="115200"/>
     <param name="frame_id"     type="string" value="$(arg set_frame_id)"/>
