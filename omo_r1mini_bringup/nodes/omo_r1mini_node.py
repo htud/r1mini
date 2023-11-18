@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import rospy
 import math
 from time import sleep
-from omo_packet_handler import PacketHandler
+from omo_r1mini_bringup.omo_packet_handler import PacketHandler
 
 from sensor_msgs.msg import Imu, JointState
 from nav_msgs.msg import Odometry
@@ -76,7 +76,7 @@ class ComplementaryFilter():
 class OMOR1miniNode:
     def __init__(self):
         self.modelName = rospy.get_param('~modelName')
-        print "Model Name:"+ self.modelName
+        print("Model Name:"+ self.modelName)
         self.ph = PacketHandler()
         self.ph.ser.reset_input_buffer() 
         self.ph.ser.reset_output_buffer() 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import serial
 import rospy
@@ -7,13 +7,11 @@ from time import sleep
 
 class PacketHandler:
    def __init__(self):
-      port_name = rospy.get_param('~port', '/dev/ttyMotor')
+      self.port_name = rospy.get_param('~port', '/dev/ttyMotor')
       baud_rate = rospy.get_param('~baud', 115200)
 
-      self.ser = serial.Serial(port_name, baud_rate)
-      self.ser_io = io.TextIOWrapper(io.BufferedRWPair(self.ser, self.ser, 1), 
-                                       newline = '\r', 
-                                       line_buffering = True)
+      self.ser = serial.Serial(self.port_name, baud_rate)
+      self.ser_io = io.TextIOWrapper(io.BufferedRWPair(self.ser, self.ser, 1), newline = '\r', line_buffering = True)
 
       self.stop_periodic_comm()
       self.ser.reset_input_buffer() 
@@ -31,7 +29,7 @@ class PacketHandler:
 
       self.incomming_info = ['ODO', 'VW', 'POSE', 'ACCL', 'GYRO']
       
-      rospy.loginfo('Serial port: %s', port_name)
+      rospy.loginfo('Serial port: %s', self.port_name)
       rospy.loginfo('Serial baud rate: %s', baud_rate)
 
    def get_port_state(self):
@@ -45,15 +43,15 @@ class PacketHandler:
 
    def write_port(self, buffer):
       if self.get_port_state() == True:
-         self.ser.write(buffer + "\r\n")
+         self.ser.write((buffer + "\r\n").encode())
       else:
-         rospy.logwarn('Serial Port %s is not Opened in Writing process', port_name)
+         rospy.logwarn('Serial Port %s is not Opened in Writing process', self.port_name)
 
    def read_packet(self):
       if self.get_port_state() == True:
          return self.read_port()
       else:
-         rospy.logwarn('Serial Port %s is not Opened in Reading process', port_name)
+         rospy.logwarn('Serial Port %s is not Opened in Reading process', self.port_name)
 
    def update_battery_state(self):
       self.write_port("$qBAT")

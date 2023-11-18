@@ -4,7 +4,7 @@ import sys
 import rospy
 import math
 from time import sleep
-from omo_packet_handler import PacketHandler
+from omo_r1mini_bringup.omo_packet_handler import PacketHandler
 
 class OMOR1miniMotorSetting:
     def __init__(self):
