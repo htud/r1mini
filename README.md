@@ -181,6 +181,12 @@ Now place a **goal** by selecting Pink arrow(**2D Nav Goal**) in the top menu an
 
 Wait until the robot reaches the goal!
 
+카메라 사용하기 
+내가 사용하는 카메라는 oCam 카메라로 설치를 하여야한다.
+git clone https://github.com/withrobot/oCam.git
+
+
+
 ---
 
 OMOROBOT INC
