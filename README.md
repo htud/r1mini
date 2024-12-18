@@ -101,6 +101,21 @@ $ roslaunch omo_r1mini_bringup omo_r1mini_robot_x4.launch
 $ roslaunch omo_r1mini_slam omo_r1mini_slam.launch
 $ roslaunch ydlidar lidar_view.launch 
 ```
+steall n1의 lidar 노드를 사용하기 위해 코드를 변경하였다.
+robot_x4는 
+```
+<include file="$(find omo_r1mini_bringup)/launch/omo_r1mini_lidar_x4.launch">
+```
+omo_r1min_lidar_x4를 사용하는데 lidar_x4 파일을 열어보면 라이다를 사용할수있는 코드들이 나오는데 그중 노드를 수정해야한다. 내가 stella의 노드 이름은 ydlidar_node 이기 때문에
+```
+<node name="ydlidar_lidar_publisher"  pkg="ydlidar_ros_driver"  type="ydlidar_ros_driver_node" output="screen" respawn="false">
+```
+수정후
+```
+ <node name="ydlidar_node" pkg="ydlidar" type="ydlidar_node" output="screen" respawn="false">
+```
+변경하여 ydlidar을 하여서 2D slam을 실행하였다.
+
 
 Launch below in HOST PC to open rviz environment to make map.  
 ```
@@ -169,3 +184,5 @@ Wait until the robot reaches the goal!
 ---
 
 OMOROBOT INC
+Rtap-map 참고 
+https://docs.trossenrobotics.com/agilex_limo_docs/demos/slam_nav/path_following.html
