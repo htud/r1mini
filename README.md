@@ -99,7 +99,7 @@ To run 2D lidar based SLAM navigation, simply launch below in ROBOT.
 ```
 $ roslaunch omo_r1mini_bringup omo_r1mini_robot_x4.launch
 $ roslaunch omo_r1mini_slam omo_r1mini_slam.launch
-$ roslaunch ydlidar_ros lidar_view.launch 
+$ roslaunch ydlidar lidar_view.launch 
 ```
 
 Launch below in HOST PC to open rviz environment to make map.  
